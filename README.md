@@ -7,7 +7,7 @@ Celem pracy było zaprojektowanie i stworzenie aplikacji umożliwiającej użytk
 - Osobne moduły routing
 - Stosowane mechanizmy resolve, canActivate, CanDeactivate, loadChildren
 - Interceptor przy zapytaniach HTTP
-- Stosowanie mechanizómów i operatorów rxjs przy pobieraniu danych ze strony serwerowej 
+- Stosowanie mechanizmów i operatorów rxjs przy pobieraniu danych ze strony serwerowej 
 - Template driven oraz reactive forms
 - Stworzone własne pipe, directive, validator
 
