@@ -1,0 +1,39 @@
+.nav-link {
+  font-size: large;
+  cursor: pointer;
+  user-select: none;
+}
+
+.navbar-brand {
+  font-size: xx-large;
+  cursor: default;
+  user-select: none;
+}
+
+.navbar-light .navbar-nav .nav-link.active {
+  cursor: default;
+}
+
+.nav-link.active {
+  cursor: default;
+  user-select: none;
+}
+
+.loader {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-left: -4em;
+}
+
+.content {
+  margin: auto;
+}
+
+.user {
+  padding-top: 3px;
+  cursor: default;
+  user-select: none;
+  padding-right: 20px;
+  color: lightgoldenrodyellow;
+}

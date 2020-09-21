@@ -1,0 +1,30 @@
+.card {
+  background-color: rgb(216, 215, 215);
+  border-color: black;
+  border-radius: 2%;
+  border-style: solid;
+  cursor: pointer;
+
+  align-items: stretch;
+  display: inline-block;
+
+  margin: 10px;
+  min-width: 290px;
+  max-width: 290px;
+  max-height: 400px;
+}
+
+.card-header{
+  font-size: 20px;
+}
+
+.card-body{
+  min-width: 270px;
+  min-block-size: 190px;
+
+  border-radius: 1%;
+  background-color: rgb(245, 243, 243);
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  background-position: center;
+}

@@ -1,0 +1,115 @@
+<div class="parent">
+  <div class="filter card">
+    <app-filter #filter ></app-filter>
+  </div>
+
+  <div class="recipes card">
+    <div class="search">
+      <div style="text-align: center;cursor: default;">
+        <h1>Wyszukiwarka przepisów</h1>
+      </div>
+      <div class="input-group mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Wpisz szukaną frazę"
+          [(ngModel)]="searchText">
+      </div>
+    </div>
+    <div class="search-button">
+      <button
+        style="width: 100%;"
+        class="btn btn-primary"
+        type="button"
+        (click)="searchRecipes(filter, fridge)">
+        Szukaj
+      </button>
+    </div>
+
+    <div style="margin-bottom: 25px;">
+      <app-recipe-list [recipePage]="recipePage"></app-recipe-list>
+    </div>
+
+    <div *ngIf="recipePage.totalResults === 0" style="margin: 20px;">
+      <legend style="text-align: center;">Nie znaleziono przepisów</legend>
+    </div>
+
+    <div class="page" *ngIf="recipePage.totalResults !== 0">
+      <nav>
+        <ul class="pagination justify-content-center">
+
+          <div class="firstPage">
+            <li class="page-item" *ngIf="!checkPreviousPage()">
+              <a class="page-link" (click)="selectPage(0)"><i class="fa fa-lg fa-angle-double-left"></i></a>
+            </li>
+            <li class="page-item disabled" *ngIf="checkPreviousPage()">
+              <a class="page-link" (click)="selectPage(0)"><i class="fa fa-lg fa-angle-double-left"></i></a>
+            </li>
+          </div>
+
+          <div class="previousPage">
+            <li class="page-item disabled" *ngIf="checkPreviousPage()">
+              <a class="page-link" href="#" tabindex="-1"><i class="fa fa-lg fa-angle-left"></i></a>
+            </li>
+            <li class="page-item" *ngIf="!checkPreviousPage()">
+              <a class="page-link" (click)="previousPage()" tabindex="-1"><i class="fa fa-lg fa-angle-left"></i></a>
+            </li>
+          </div>
+
+
+          <div class="additionalPrevious">
+            <li class="page-item" *ngIf="checkNextPage() && totalPages > 2">
+              <a class="page-link" (click)="goToPage(-2)">{{ page - 1 }}</a>
+            </li>
+          </div>
+
+          <div class="previous">
+            <li class="page-item" *ngIf="!checkPreviousPage() && totalPages > 1">
+              <a class="page-link" (click)="goToPage(-1)">{{ page }}</a>
+            </li>
+          </div>
+          <div class="current">
+            <li class="page-item active">
+              <a class="page-link" (click)="goToPage(0)">{{ page + 1 }}</a>
+            </li>
+          </div>
+          <div class="next">
+            <li class="page-item" *ngIf="!checkNextPage() && totalPages > 1">
+              <a class="page-link" (click)="goToPage(1)">{{ page + 2 }}</a>
+            </li>
+          </div>
+
+          <div class="additionalNext">
+            <li class="page-item" *ngIf="checkPreviousPage() && totalPages > 2">
+              <a class="page-link" (click)="goToPage(2)">{{ page + 3 }}</a>
+            </li>
+          </div>
+
+
+          <div class="nextPage">
+            <li class="page-item disabled" *ngIf="checkNextPage()">
+              <a class="page-link" href="#" tabindex="-1"><i class="fa fa-lg fa-angle-right"></i></a>
+            </li>
+            <li class="page-item" *ngIf="!checkNextPage()">
+              <a class="page-link" (click)="nextPage()" tabindex="-1"><i class="fa fa-lg fa-angle-right"></i></a>
+            </li>
+          </div>
+          <div class="lastPage">
+            <li class="page-item" *ngIf="!checkNextPage()">
+              <a class="page-link" (click)="selectPage(totalPages - 1)"><i class="fa fa-lg fa-angle-double-right"></i></a>
+            </li>
+            <li class="page-item disabled" *ngIf="checkNextPage()">
+              <a class="page-link" (click)="selectPage(totalPages - 1)"><i class="fa fa-lg fa-angle-double-right"></i></a>
+            </li>
+          </div>
+
+        </ul>
+      </nav>
+    </div>
+
+  </div>
+
+  <div class="fridge card">
+    <app-fridge #fridge></app-fridge>
+  </div>
+</div>

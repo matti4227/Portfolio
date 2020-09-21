@@ -1,0 +1,217 @@
+<div class="parent">
+  <mat-card class="card">
+
+    <mat-card-header>
+
+      <div mat-card-avatar class="header-image">
+        <img *ngIf="recipe?.avatar" mat-card-image [src]="recipe?.avatar" class="avatar">
+      </div>
+
+      <mat-card-title [routerLink]="['/profile', recipe?.username]" class="username">
+        <div class="user">
+          <b>{{ recipe?.username }}</b>
+        </div>
+      </mat-card-title>
+
+    </mat-card-header>
+
+    <div style="text-align: center; margin-bottom: 15px;">
+      <mat-card-title><b>{{ recipe?.name }}</b></mat-card-title>
+      <mat-label>{{ recipe?.description }}</mat-label>
+    </div>
+
+
+    <div>
+      <img class="image" mat-card-image [src]="recipe?.picture">
+    </div>
+
+    <div class="form-group star-rating" *appHasRole="'[ADMIN],[USER]'">
+      <div class="stars">
+        <ngb-rating [(rate)]="currentRate" max="5" (hover)="hoveredRate=$event">
+          <ng-template let-fill="fill" let-index="index">
+            <span
+              class="star"
+              [class.filled]="fill === 100"
+              [class.bad]="index == 0"
+              [class.good]="index == 4"
+              [title]="hoveredRate">
+              &#9733;
+            </span>
+          </ng-template>
+        </ngb-rating>
+      </div>
+
+
+      <div class="rate-button">
+        <button
+        class="btn btn-warning mr-3 offset-md-1"
+        (click)="rateRecipe()">
+        Oceń przepis
+      </button>
+      </div>
+
+
+    </div>
+
+
+    <div class="container recipeInfo">
+      <div class="row">
+        <div class="col-sm" style="text-align: center;">
+          <mat-card class="info">
+            <div>
+              <h5 style="font-weight: 600;">Ocena: </h5 >
+            </div>
+            <div *ngIf="recipe?.rating">
+              <app-star [rating]="recipe?.rating"></app-star>
+            </div>
+            <div *ngIf="!recipe?.rating">
+              Brak ocen
+            </div>
+
+          </mat-card>
+        </div>
+        <div class="col-sm" style="text-align: center;">
+          <mat-card class="info">
+            <div>
+              <h5 style="font-weight: 600;">Trudność wykonania: </h5 >
+            </div>
+            <div>
+              <b>{{ difficulty }}</b>
+            </div>
+          </mat-card>
+        </div>
+        <div class="col-sm" style="text-align: center;">
+          <mat-card class="info">
+            <div>
+              <h5 style="font-weight: 600;">Czas przygotowania: </h5 >
+            </div>
+            <div>
+              <b>{{ prepTime }}</b>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <div style="display: flex">
+
+      <div class="container" style="width: 40%;">
+        <mat-card-content>
+          <mat-card-title>Składniki</mat-card-title>
+          <div class="ingredients">
+            <ul class="list-group list-group-flush">
+              <li
+                class="list-group-item"
+                *ngFor="let ingredient of recipe?.recipeIngredients | sort: 'name'">
+                <div style="display: inline-block;"><b>{{ ingredient?.name | titlecase }}</b>&nbsp;&nbsp;</div>
+                <div style="display: inline-block;">{{ ingredient?.amount }}</div>
+              </li>
+            </ul>
+          </div>
+        </mat-card-content>
+      </div>
+
+      <div class="container" style="flex: 1;">
+        <mat-card-content>
+          <mat-card-title>Przygotowanie</mat-card-title>
+          <div class="preparation">
+            <h5>{{ recipe?.preparation }}</h5>
+          </div>
+        </mat-card-content>
+      </div>
+
+    </div>
+
+
+
+    <div class="container" *appHasRole="'[ADMIN],[USER]'">
+      <mat-card-actions>
+        <button
+          *ngIf="!recipe?.inCookbook"
+          type="button"
+          style="margin-right: 3px;margin-left: 20px;margin-top: 25px;"
+          class="btn btn-success"
+          (click)="addToCookbook()">
+          Dodaj do książki kucharskiej
+        </button>
+        <button
+          *ngIf="recipe?.inCookbook"
+          type="button"
+          style="margin-right: 3px;margin-left: 20px;margin-top: 25px;"
+          class="btn btn-danger"
+          (click)="removeFromCookbook()">
+          Usuń z książki kucharskiej
+        </button>
+
+        <button
+          *appOwnRecipe="recipe?.username"
+          type="button"
+          style="margin-right: 3px;margin-left: 20px;margin-top: 25px;"
+          class="btn btn-warning"
+          [routerLink]="['/recipe', recipe?.id, 'edit']"
+          routerLinkActive="router-link-active">
+          Edytuj przepis
+        </button>
+      </mat-card-actions>
+    </div>
+
+
+  </mat-card>
+
+  <mat-card class="card">
+    <div class="container" *appHasRole="'[ADMIN],[USER]'">
+      <legend>Skomentuj</legend>
+      <div class="comment container" style="margin-bottom: 10px;margin-top: 20px;">
+        <textarea
+          class="form-control"
+          name="comment"
+          [(ngModel)]="comment"
+          rows="5"
+          placeholder="Twój komentarz"></textarea>
+      </div>
+      <div  class="comment">
+        <button
+          type="button"
+          class="btn btn-primary"
+          style="width:120px;font-family: Georgia, 'Times New Roman', Times, serif;"
+          (click)="commentRecipe()">
+          Skomentuj
+        </button>
+      </div>
+
+      <hr>
+    </div>
+
+
+    <legend class="container">Komentarze</legend>
+    <div class="comments container" *ngIf="recipe?.comments.length > 0">
+      <mat-card class="card1" *ngFor="let comment of recipe?.comments">
+        <mat-card-header>
+          <div mat-card-avatar class="header-image">
+            <img *ngIf="comment?.avatar" mat-card-image [src]="comment?.avatar" class="avatar">
+          </div>
+          <mat-card-title [routerLink]="['/profile', comment?.username]" class="username">
+            <div class="user">
+              {{ comment?.username }}
+            </div>
+          </mat-card-title>
+        </mat-card-header>
+        <div class="card" >
+          <div class="card-body">
+            {{ comment?.comment }}
+          </div>
+        </div>
+        <mat-card-footer class="commentDate">
+          {{ comment?.createdDate | date:'medium' }}
+        </mat-card-footer>
+      </mat-card>
+    </div>
+    <div *ngIf="recipe?.comments.length === 0">
+      <legend style="text-align: center;">Brak komentarzy</legend>
+    </div>
+
+  </mat-card>
+
+</div>

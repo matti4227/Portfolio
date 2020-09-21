@@ -1,0 +1,58 @@
+.parent {
+  display: flex;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  width: 80%;
+  margin: auto;
+
+  .filter {
+    width: 200px;
+  }
+
+  .recipes {
+    flex: 1;
+
+    .search {
+      padding-left: 10px;
+      padding-top: 10px;
+      padding-right: 10px;
+    }
+
+    .search-button {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+  }
+
+  .card {
+    padding: 3px;
+    margin: 3px;
+    background: rgb(253, 253, 235);
+  }
+
+  .page {
+    margin-top: 15px;
+    margin: auto;
+  }
+  .page-item {
+    cursor: pointer;
+    user-select: none;
+    .fa {
+      -webkit-text-stroke: 1px;
+      color: black;
+    }
+  }
+  .page-item.disabled {
+    cursor: auto;
+    .fa {
+      color: rgb(173, 170, 170);
+    }
+  }
+  .page-item.active {
+    cursor: auto;
+  }
+  .page-link {
+    font-weight: 700;
+  }
+
+}

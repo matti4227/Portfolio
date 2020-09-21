@@ -1,0 +1,16 @@
+<div class="card-body container">
+
+  <div class="nav mb-2 nav-pills" role="tablist">
+    <a
+      class="nav-link"
+      [routerLink]="['my-recipes']"
+      routerLinkActive="active">Moje przepisy</a>
+    <a
+      class="nav-link"
+      [routerLink]="['edit']"
+      routerLinkActive="active">Edytuj konto</a>
+  </div>
+
+  <router-outlet></router-outlet>
+
+</div>

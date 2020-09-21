@@ -1,0 +1,28 @@
+.card {
+
+  .account-edit {
+
+    display: flex;
+
+
+    .avatar-edit {
+
+    }
+
+    .info-edit {
+      flex: 1;
+    }
+  }
+
+  .round-image {
+    width: 250px;
+    height: 250px;
+    background-size: cover;
+    display: block;
+    border-radius: 50%;
+  }
+}
+
+.custom-file-input ~ .custom-file-label::after {
+  content: "Przeglądaj";
+}

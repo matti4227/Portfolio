@@ -1,0 +1,302 @@
+<div class="card">
+  <div class="card-header">
+    <b>{{ pageTitle }}</b>
+  </div>
+
+  <div class="card-body">
+
+    <div class="form-group row mb-2">
+      <label class="col-md-3 col-form-label"
+              for="nameId">Nazwa przepisu</label>
+      <div class="col-md-8">
+        <input
+          required
+          maxlength="60"
+          class="form-control"
+          id="nameId"
+          type="text"
+          placeholder="Podaj nazwę przepisu"
+          [(ngModel)]="currentRecipe.name"
+          #name="ngModel"
+          [ngClass]="{'is-invalid': (name.touched || name.dirty) && !name.valid }" />
+      <span class="invalid-feedback">
+          Wymagana nazwa (do 60 znaków).
+      </span>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="form-group row mb-2">
+
+        <label
+          class="col-md-3 col-form-label"
+          for="difficultyId">Trudność wykonania</label>
+        <div class="col-md-2">
+          <select
+            required
+            class="form-control"
+            id="difficultyId"
+            [(ngModel)]="currentRecipe.difficulty"
+            #difficulty="ngModel"
+            [ngClass]="{'is-invalid': (difficulty.touched || difficulty.dirty) && !difficulty.valid }">
+            <option
+              *ngFor="let option of difficulties"
+              [value]="option">{{ option | titlecase }}</option>
+          </select>
+          <span class="invalid-feedback">
+            Wymagane.
+          </span>
+        </div>
+
+        <label class="col-md-3 col-form-label"
+              for="preparationTimeId">Czas przygotowania</label>
+
+        <div class="col-md-3">
+          <select
+            required
+            class="form-control"
+            id="preparationTimeid"
+            [(ngModel)]="currentRecipe.preparationTime"
+            #preparationTime="ngModel"
+            [ngClass]="{'is-invalid': (preparationTime.touched || preparationTime.dirty) && !preparationTime.valid }">
+            <option
+              *ngFor="let option of prepTimes"
+              [value]="option">{{ option }}</option>
+          </select>
+          <span class="invalid-feedback">
+            Wymagane.
+          </span>
+        </div>
+
+    </div>
+
+    <hr>
+
+    <div class="form-group row mb-2">
+      <label class="col-md-3 col-form-label"
+              for="recipeDescriptionId">Opis</label>
+      <div class="col-md-8">
+        <textarea
+          required
+          maxlength="1000"
+          class="form-control"
+          id="recipeDescriptionId"
+          rows="3"
+          placeholder="Krótki opis przepisu"
+          [(ngModel)]="currentRecipe.description"
+          #description="ngModel"
+          [ngClass]="{'is-invalid': (description.touched || description.dirty) && !description.valid }" ></textarea>
+      <span class="invalid-feedback">
+        Wymagany opis (do 1000 znaków).
+      </span>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="form-group row mb-2">
+      <label class="col-md-3 col-form-label"
+              for="preparationId">Przygotowanie</label>
+
+      <div class="col-md-8">
+        <textarea
+          required
+          maxlength="10000"
+          class="form-control"
+          id="preparationId"
+          rows="9"
+          placeholder="Etapy przygotowania przepisu"
+          [(ngModel)]="currentRecipe.preparation"
+          #preparation="ngModel"
+          [ngClass]="{'is-invalid': (preparation.touched || preparation.dirty) && !preparation.valid }" ></textarea>
+      <span class="invalid-feedback">
+          Wymagany opis przygotowania (do 10000 znaków).
+      </span>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="form-group row mb-2">
+      <label class="col-md-3 col-form-label"
+              for="preparationId">Kategorie</label>
+
+      <div class="col-md-8">
+        <mat-form-field class="full-width">
+          <input
+            type="text"
+            placeholder="Wybierz kategorię"
+            matInput
+            [formControl]="myCategoryControl"
+            [(ngModel)]="selectedCategory"
+            [matAutocomplete]="autoCat">
+          <mat-autocomplete #autoCat="matAutocomplete">
+            <mat-option *ngFor="let option of filteredCategoryOptions | async" [value]="option">
+              {{ option | titlecase }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <button
+          class="btn btn-primary mr-3 offset-md-1"
+          style="width:100px;"
+          (click)="addCategory()">
+          Dodaj
+        </button>
+      </div>
+    </div>
+
+    <div class="form-group row mb-2">
+      <label class="col-md-3 col-form-label"
+              for="preparationId"></label>
+
+      <div class="col-md-8">
+        <span *ngFor="let category of recipe.categories; let i = index">
+          <button class="btn btn-outline-secondary"
+                  style="font-size:smaller;margin-bottom:12px;margin-right:2px"
+                  title="Kliknij, aby usunąć kategorię"
+                  (click)="removeCategory(i)">
+            {{ category.name }}
+            <span>x</span>
+          </button>
+        </span>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="form-group row mb-2">
+      <label class="col-md-3 col-form-label"
+              for="preparationId">Składniki</label>
+    </div>
+    <div class="form-group row mb-2">
+      <div class="col-md-3 offset-md-1">
+        <mat-form-field class="full-width">
+          <input
+            type="text"
+            placeholder="Wybierz składnik"
+            matInput
+            [formControl]="myIngredientControl"
+            [(ngModel)]="selectedIngredient"
+            [matAutocomplete]="autoIng">
+          <mat-autocomplete #autoIng="matAutocomplete">
+            <mat-option *ngFor="let option of filteredIngredientOptions | async" [value]="option">
+              {{ option | titlecase }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-3">
+        <mat-form-field>
+          <input matInput placeholder="Ilość" [(ngModel)]="selectedAmount" [ngModelOptions]="{ standalone: true }">
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-2">
+        <mat-form-field style="width: 100px;">
+          <mat-select [(ngModel)]="selectedType" [ngModelOptions]="{ standalone: true }">
+            <mat-option *ngFor="let type of amountTypes" [value]="type" >
+              {{ type }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-1">
+        <button
+          class="btn btn-primary mr-3"
+          style="width:150px;margin-top: 10px;margin-left: 10px;"
+          (click)="addIngredient()">
+          Dodaj składnik
+        </button>
+      </div>
+    </div>
+
+    <div class="form-group row mb-2">
+      <label class="col-md-3 col-form-label"
+              for="preparationId"></label>
+
+      <div class="form-group row mb-2">
+        <mat-list>
+          <mat-list-item *ngFor="let ingredient of recipe.recipeIngredients | sort:'name';let i = index">
+            <div>
+              <span style="text-align: left;">{{ ingredient.name | titlecase }}&nbsp;&nbsp;</span>
+              <span>{{ ingredient.amount }}</span>
+              <button
+                style="margin-left: 5px;"
+                class="btn btn-danger mr-3 btn-sm"
+                title="Kliknij, aby usunąć składnik"
+                (click)="removeSelectedIngredient(i)">
+                x
+              </button>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="form-group row mb-3">
+        <label class="col-md-3 col-form-label"
+              for="pictureId">Wybierz zdjęcie</label>
+
+        <div class="col-md-8 input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Wybierz zdjęcie</span>
+          </div>
+
+          <div class="custom-file">
+            <input
+              required
+              class="form-control"
+              type="file"
+              class="custom-file-input"
+              id="inputGroupFile01"
+              accept="image/*"
+              (change)="selectPicture($event)"
+              [(ngModel)]="selectedImage"
+              #image="ngModel"
+              [ngClass]="{'is-invalid': (image.touched || image.dirty) && !image.valid }" >
+            <label class="custom-file-label" for="inputGroupFile01">Wybierz plik</label>
+          </div>
+        </div>
+    </div>
+    <div class="form-group row mb-3">
+      <label class="col-md-3 col-form-label"
+            for="pictureId"></label>
+      <div class="imagePreview" *ngIf="recipe.picture">
+        <img class="image" [src]="recipe.picture">
+      </div>
+    </div>
+
+    <div class="form-group row mb-2">
+      <div class="offset-md-3 col-md-3" *ngIf="currentRecipe?.id !== 0">
+        <button class="btn btn-primary"
+                (click)="saveRecipe()">
+          Zapisz przepis
+        </button>
+      </div>
+      <div class="offset-md-5" *ngIf="currentRecipe?.id === 0">
+        <button class="btn btn-primary"
+                (click)="saveRecipe()">
+          Zapisz przepis
+        </button>
+      </div>
+
+      <div class="col-md-4" *ngIf="currentRecipe?.id !== 0">
+        <div *appOwnRecipe="recipe?.username">
+          <button
+            style="margin-left: 15px;"
+            class="btn btn-danger"
+            (click)="openConfirmation()">
+            Usuń przepis
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
