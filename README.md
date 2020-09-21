@@ -12,7 +12,7 @@ Celem pracy było zaprojektowanie i stworzenie aplikacji umożliwiającej użytk
 - Stworzone własne pipe, directive, validator
 
 ## Spring Boot
-- Maven
+- Maven, Lombok, Hibernate
 - Podłączone z bazą danych MySQL
 - Podział na model, controler, service, repository
 - Ochrona danych za pomocą @PreAuthorize
